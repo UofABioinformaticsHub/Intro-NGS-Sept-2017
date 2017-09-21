@@ -24,7 +24,9 @@ We hope it will be useful in enabling you to continue and to advance your resear
 
 ## Course Summary
 
+Next-generation sequencing (NGS) has become an important tool in assessing biological signal within an organism or population. Stemming from previous technologies that were costly and time-consuming to run, NGS platforms are relatively cheap and enable the investigation of the genome, transcriptome, methylome etc at extremely high resolution. The high-throughput of these machines also has unique challenges, and it is important that scientists are aware of the potential limitations of the platforms and the issues involved with the production of good quality data.
 
+In this course, we will illustrate the fundamentals of Illumina NGS technology (the current market leader in the production of sequencing data), describe the affect that library preparation can have on downstream data, as well as running through a basic workflow used to analyse NGS data.
 
 ## Today's Instructors
 

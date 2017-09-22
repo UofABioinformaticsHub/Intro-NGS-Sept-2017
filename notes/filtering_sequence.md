@@ -1,2 +1,98 @@
 
 # Trimming and quality filtering of NGS data
+
+Once we have inspected our data & have an idea of how accurate our reads are, as well as any other technical issues that may be within the data, we may need to trim or filter the reads to make sure we are aligning or analysing sequences that accurately represent our source material.  As we’ve noticed, the quality of reads commonly drops off towards the end of the reads, and dealing with this behaviour is an important part of most  processing pipelines.  Sometimes we will require reads of identical lengths for our downstream analysis, whilst other times we can use reads of varying lengths.  The data cleaning steps we choose for our own analysis will inevitably be influenced by our downstream requirements.
+
+## The Basic Workflow
+
+Data cleaning & pre-processing can involve many steps, and today we will use the basic work-flow as outlined in the following flow chart.  Every analysis is slightly different so some steps may or may not be required for your own data.  Some steps do have a little overlap, and some pipelines (e.g. *Stacks*) may perform some of these steps for you.
+
+Using today’s datasets, we will take one sequencing through demultiplexing and adapter removal, and then use our *C. elegans* WGS to run genome mapping and alignment filtering. We will perform most steps on files at this stage, rather than on a complete library, but the principle is essentially the same
+
+![Illumina Workflow](../images/workflow.png)
+
+\section{Demultiplexing}
+
+In the previous section "Understanding NGS Data \& FASTQ Format" we discussed the difference between an *index* and a *barcode*. If you use an indexed adapter to distinguish samples on an Illumina sequencing run, the demultiplexing is *usually* done on the sequencing machine. However, sometimes it makes sense to use a barcode (or sometimes called "inline barcode"), to further multiplex samples onto one sequencing run.
+
+While barcode can be incredibly useful, it is important to note that Illumina cycle calibration and cluster calling is done in the first 4 cycles (first four base-pairs of read 1). It also is used to establish other metrics (e.g., signal thresholds) for base-calling.
+Therefore it is essential that the first four base pairs are "diverse" (i.e. no particular nucleotide is over-represented in the first four base-pairs). Designing the right barcodes to add to the start of your reads extremely important!
+
+Additionally, the Illumina NextSeq machine's have a slighly different sequence setup to the other sequencing machines (MiSeq, HiSeq and GAII's), using two-channel sequencing, which requires only two images to encode the data for four DNA bases, one red channel and one green channel. Guanine is an absence of colour and therefore at least one base other than G most be present in the [first two cycles](http://blog.kokocinski.net/index.php/barcode-balancing-for-illumina-sequencing?blog=2).
+
+For more information on Illumina cluster density and other technical aspects of cycles and imaging, [read the following Illumina support material](https://support.illumina.com/content/dam/illumina-marketing/documents/products/other/miseq-overclustering-primer-770-2014-038.pdf).
+
+To demonstrate demultiplexing we will use the a sequencing run with two samples that have a 7bp barcode. Our barcode sequences should be "GCGTAGT" (for sample1) and "CCTCGTA" (for sample2). Lets first see what possible barcodes are available in the first 7bp of our dataset and see if it matches what we expect:
+
+```
+cd rawData/Multiplexed
+zcat Run1_R1.fastq.gz | sed -n '2~4p' | cut -c 1-7 | sort | uniq -c | sort -nr | head -n10
+```
+
+What top 5 barcodes are found in our data? Do the top two reflect our the barcodes we should have?
+
+The command above is quite long and contains multiple unix commands that are separated by a pipe. What does each command do?
+
+| Command | Explanation |
+|---------|-------------|
+| `zcat Run1_R1.fastq.gz` | Prints the compressed fastq file to screen |
+| `sed -n '2~4p'` | Prints the second line (sequence of each fastq file) |
+| `cut -c 1-7` | Get the first 7 characters |
+| `sort` | sort the sequences |
+| `uniq -c` | Find the unique 7 characters are count them |
+| `sort -nr` | sort the sequences and reverse the order |
+| `head -n10` | Print the top 10 |
+
+
+\begin{steps}
+Our barcodes are actually in a file called barcodes
+
+```
+cd rawData/Multiplexed/
+gunzip Run1_R1.fastq.gz
+gunzip Run1_R2.fastq.gz
+sabre pe -m 1 -f Run1_R1.fastq -r Run1_R2.fastq -b barcodes_R1.txt \
+  -u unknown_barcode1.fastq -w unknown_barcode2.fastq
+```
+
+How many read pairs were extracted in each sample?
+
+Run the command again without the one mismatch. How many read are now in each?
+
+## Removal of Low Quality Reads and Adapters
+
+Adapter removal is an important step in many sequencing projects, mainly projects associated with small DNA/RNA inserts. For example, a common RNAseq experiment is to sequence small non-coding RNAs that are generated by an indvidual to regulate other coding sequences. These small RNAs (namely miRNAs, snoRNAs and/or siRNAs) are generally between 19-35bp, which is significantly smaller than the shortest, standard read length of most Illumina MiSeq/NextSeq/HiSeq machines (usually have read length settings such as 50, 75, 100, 125, 250 or 300bp). Therefore it is important to trim adapters accurately to ensure that the genome mapping and other downstream analyses are accurate.
+
+In previous workshops we would run multiple steps to remove both low-quality reads, but today's trimming algorithms have become better at removing low-quality data and the same time as removing adapters.
+
+The tool we'll use today is `cutadapt` \& it's one of the few bioinformatics tools to have a helpful webpage, [so head to the site](http://cutadapt.readthedocs.org/).
+
+
+## Paired-end Data
+
+In the above process, we removed the adapters from each file separately. What did the setting `-m 20` specify?
+
+Could this cause any problems for paired-end reads, where each fastq file must contain exactly matching reads?
+
+The more recent versions of `cutadapt` allow for trimming sets of paired reads.
+[Check the website for the correct code](http://cutadapt.readthedocs.org/en/stable/guide.html#trimming-paired-end-reads).
+
+Now we can trim the data our demultiplexed data using the Illumina Nextera paired-end adapters. This are commonly used in Illumina projects. The index in the 3' adapter of the first read, which is used to demultiplex on the sequencing machine, we need block the sequence otherwise it can cause problems in the adapter matching. To do this, we use a sequence of "N" nucleotides.
+
+```
+cd rawData/Multiplexed
+mkdir -p rawData/Multiplexed/trimmedData
+cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNATCTCGTATGCCGTCTTCTGCTTG \
+    -A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATT \
+    -o rawData/Multiplexed/trimmedData/Sample1_r1_trim1.fastq \
+    -p rawData/Multiplexed/trimmedData/Sample1_r2_trim2.fastq \
+    Sample1_r1.fastq Sample1_r2.fastq
+```
+
+Now lets do this with Sample2.
+
+When running the adapter trimming we needed to add blocking "N" nucleotides to the adapter sequence. Why do we do this?
+
+How many final adapter trimmed reads were found in Sample1 and Sample2?
+
+The cutadapt program produces a large amount of information about the trimming process, especially regarding the sequence length distribution of the output reads. To the nearest 10bp (i.e. 10-20 or 110-120), what would be the modal peak of each Sample (the 10bp containing the most number of sequences)?

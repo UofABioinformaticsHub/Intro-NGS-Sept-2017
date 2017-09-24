@@ -1,2 +1,1 @@
-
 # Quality Control

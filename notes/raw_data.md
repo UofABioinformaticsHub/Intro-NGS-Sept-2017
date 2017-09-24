@@ -1,4 +1,5 @@
-
+* TOC
+{:toc}
 
 # NGS Data Generation
 
@@ -85,3 +86,31 @@ I - Illumina 1.3+ Phred+64, raw reads typically (0, 40)
 J - Illumina 1.5+ Phred+64, raw reads typically (3, 40)
 L - Illumina 1.8+ Phred+33, raw reads typically (0, 41)
 ```
+
+### Interpretation of PHRED Scores
+The quality scores are related to the probability of calling an incorrect base through the
+formula  
+
+*Q =* −10log<sub>10</sub>*P*  
+
+where *P* is the probability of calling the incorrect base.
+This is more easily seen in the following table:
+
+| PHRED Score | Probability of Incorrect Base Call | Accuracy of Base Call |
+| -----------:|:---------------------------------- |:----------------------|
+| 0           | 1 in 1          | 0%          |
+| 10          | 1 in 10         | 90%         |
+| 20          | 1 in 100        | 99%         |
+| 30          | 1 in 1000       | 99.9%       |
+| 40          | 1 in 10000      | 99.99%      |
+
+#### Questions
+{:.no_toc}
+
+1. Which coding system do you think has been used for the RNA-Seq reads that we
+have?
+2. In the PHRED +33 coding system, the character ‘@’ is used. Can you think of any
+potential issues this would cause when searching within a fastq file?
+3.A common threshold for inclusion of a sequence is a Q score >20. Considering the
+millions of sequences obtained from a flowcell, do you think that NGS is likely to be
+highly accurate?

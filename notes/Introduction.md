@@ -8,7 +8,7 @@
 
 ## General Information
 
-Thank you for your attendance & welcome to the *Introduction to Bash: Using the Terminal For Bioinformatics* Workshop.
+Thank you for your attendance & welcome to the *Introduction to NGS Data* Workshop.
 This is an offering by the University of Adelaide, Bioinformatics Hub which is a centrally funded initiative from the Department of Vice-Chancellor (Research), with the aim of assisting & enabling researchers in their work.
 Training workshops & seminars such as this one are an important part of this initiative.
 
@@ -19,7 +19,7 @@ Some additional resources run by the Bioinformatics Hub which may be of interest
 - A Twitter account https://twitter.com/UofABioinfoHub/
 - An active Slack team for discussing Bioinformatics questions with the local community. Slack teams do require an invitation to join, so please email the Hub on bioinf_hub@adelaide.edu.au to join the community. All are welcome.
 
-Today’s workshop has been put together based on previous material and courses prepared by Dr Stephen Bent (University of Queensland), with generous technical support & advice provided by Dr Nathan Watson-Haigh and Dr Dan Kortschak.
+Today’s workshop has been put together by Jimmy Breen and Steve Pederson.
 We hope it will be useful in enabling you to continue and to advance your research.
 
 ## Course Summary
@@ -34,9 +34,8 @@ Today your helpers will be
 
 - Steve Pederson, Hien To, Alastair Ludington (Bioinformatics Hub)
 - Jimmy Breen (Robinson Research Institute & Bioinformatics Hub)
-- Robert Qiao, Exe Escobedo (Phoenix Support Team)
 - Terry Bertozzi (SA Museum)
-- Aaron Casey (SAHMRI)
+- Rick Tearle, Lloyd Low (JS Davies Research Centre)
 
 ## Recommendations For Working
 
@@ -52,17 +51,16 @@ This will be important as we all set our computers up in the following section.
 
 ## Computer Setup
 
-Previously we have run these sessions using Virtual Machines, but today we are opting for running all sessions using the tools locally installed on your own machines today.
-*As there will be a huge variety of laptops in the room, the initial set-up may be a difficult to begin with*, but will settle as the day progresses.
-Although this will present numerous challenges from our perspective, we feel this is a better approach as everyone will leave knowing exactly how to get the ball rolling on their own familiar systems.
-
-Instructions for how to set-up everything on your own machine are at the following pages.
-Please follow these very carefully, and call an instructor over if you have trouble.
-In particular, the Windows set-ups may take a while to get sorted.
+For those running OSX or Ubuntu we will be able to run today's session on your own machines.
+Many bioinformticians use these operating systems so the suite of tools is relatively mature.
+In order to correctly configure your computer for today's session, please follow the links below.
 
 - [Mac/OSX](../install/osxInstall)
-- [Windows](../install/windowsInstall)
+- [Ubuntu]
 
-If you are already running Ubuntu, your computer will already be set-up correctly.
+For those running Windows, we could probably perform about half of today's session on your computer.
+However, as many tools rely on the fundamental architecture of OSX & Linux systems, not all tools are available.
+The best solution for today's session is to use a VM which we have configured for you.
+Setup instructions for these VMs are given on the following page.
 
 [Home](../)

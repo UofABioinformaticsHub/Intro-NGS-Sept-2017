@@ -1,2 +1,2 @@
 
-# Quality Control and Trimming
+# Quality Control

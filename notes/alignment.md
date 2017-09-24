@@ -9,27 +9,25 @@ Most fast aligners in widespread public use are based on a technique called the 
 
 #### What’s the difference
 
-Some key differences between aligners is in the way they index the genome, and in the a way they are equipped to handle mismatches & indels.  Choosing an aligner can be a difficult decision with the differences often being quite subtle.  Sometimes there is a best choice, other times there really isn’t.  Make sure you’ve researched relatively thoroughly before deciding which to use.
+Some key differences between aligners is in the way they index the genome, and in the a way they are equipped to handle mismatches & InDels.  Choosing an aligner can be a difficult decision with the differences often being quite subtle.  Sometimes there is a best choice, other times there really isn’t.  Make sure you’ve researched relatively thoroughly before deciding which to use.
 
 ## Aligning our WGS reads
 
 ### Downloading A Reference Genome
 
-To align any reads, we first need to download the appropriate (i.e.  latest) genome \& then we can build the index to enable fast searching via the Burrows-Wheeler Transform. Like we’ve seen in the previous sections, our reads today come from the nematode or Roundworm (*Caenorhabditis elegans*).  We have a copy of the genome read for you in the rawData directory,  however you can always redownload the genome (like you can do with all model genomes) by opening Firefox & head to [ftp://ftp.ensembl.org/pub/release-88/fasta/caenorhabditis_elegans/](ftp://ftp.ensembl.org/pub/release-88/fasta/caenorhabditis_elegans/).  (Here you can find the transcriptome (cdna), genome (dna), proteome (pep) & non-coding RNA (ncrna) in separate folders). With our C. elegans genome fasta file, we should have a quick look at the file.  It will contain all chromosomes & the mitochondrial sequences. We can print out the first 10 lines using the head command.
+To align any reads, we first need to download the appropriate (i.e.  latest) genome \& then we can build the index to enable fast searching via the Burrows-Wheeler Transform. Like we’ve seen in the previous sections, our reads today come from the nematode or Roundworm (*Caenorhabditis elegans*).  
+
+**Note**: If you want the full genome sequence you can use the command-line program `wget` to download the *C. elegans* genome sequence. If `wget` doesnt work for you, you can always you can always redownload the genome (like you can do with all model genomes) by opening Firefox & head to [ftp://ftp.ensembl.org/pub/release-90/fasta/caenorhabditis_elegans/](ftp://ftp.ensembl.org/pub/release-90/fasta/caenorhabditis_elegans/).  
+
+For todays tutorial, we've given you just the sequence of chrI:
 
 ```
-cd ~/rawData/
-gunzip cel1.fa.gz
-head cel1.fa
+# Have a look at the first few lines
+head chrI.fa
 ```
 
 Note that the first line describes the following sequence & begins with a \> symbol.  We can use this to search within the file using regular expressions \& print all of these description lines.
 
-```grep "^>" cel1.fa```
-
-Alternatively could simply count them using the -c option.
-
-```grep -c ">" cel1.fa```
 
 ## Building an Index
 
@@ -45,15 +43,17 @@ We should also inspect the help page for bwa index which we will use to build th
 bwa index
 ```
 
-Using this particular process you can usually just run the command on the fasta file and the index will be called by the same filename.  However in this case, we will name the index ”cel1” (thats cel for *C. elegans*) and ”1” for the version, by using the -p flag/parameter Now that we’ve had a look, type to following command which will take a few minutes to run.
+Using this particular process you can usually just run the command on the fasta file and the index will be called by the same filename.  However in this case, we will name the index "Celegans_chrI" by using the `-p` flag/parameter Now that we’ve had a look, type to following command which will take a few minutes to run.
 
 ```
-bwa index -p Cel1 cel1.fa
+bwa index chrI.fa -p Celegans_chrI
 ```
 
 Let’s look at what files have been created.
 
-`ls`
+```
+ls
+```
 
 You should be able to open a few of the files with the ”less” command, however the main files (\*.sa, \*.bwt and \*.pac) are the BWT transformed files that are in binary, so we can’t really see what they look like, but these are required by the aligner bwa.
 
@@ -62,19 +62,39 @@ You should be able to open a few of the files with the ”less” command, howev
 Because we only have a small subset of the actual sequencing run, we should be able to run this alignment in a reasonable period of time
 
 ```
-bwa mem Cel1 WGS_SRR2003569_1.fastq.gz WGS_SRR2003569_2.fastq.gz | samtools view -bhS -> WGS_SRR2003569.bam
+bwa mem -t 4 Celegans_chrI SRR2003569_sub_1.fastq.gz SRR2003569_sub_2.fastq.gz | samtools view -bhS -F4 -> SRR2003569_chI.bam
 ```
 
 Let’s break down this command a little.  The first part of the command:
 
 ```
-bwa mem Cel1 WGS/WGS_SRR2003569_1.fastq.gz WGS/WGS_SRR2003569_2.fastq.gz
+bwa mem -t 4 Celegans_chrI SRR2003569_sub_1.fastq.gz SRR2003569_sub_2.fastq.gz
 ```
 
-will align our compressed sequenced reads to the Cel1 bwa index that we made. Usually you can create a SAM file (see next section) to store all the alignment data.  SAM files however are text files which can take up a significant amount of disk space, so its much more efficient to pipe it to the samtools command and create a compressed binary SAM file (called BAM). To do this, we run the program samtools:
+will align our compressed sequenced reads to the Celegans_chrI `bwa` index that we made. Usually you can create a SAM file (see next section) to store all the alignment data.  SAM files however are text files which can take up a significant amount of disk space, so its much more efficient to pipe it to the `samtools` command and create a compressed binary SAM file (called BAM). To do this, we run the program `samtools`:
 
 ```
-samtools view -bhS - > WGS_SRR2003569.bam
+samtools view -bhS - > SRR2003569_chI.bam
 ```
 
-In this context, samtools view is the general command that allows the conversion of the SAM to BAM. There is another more compressed version of the SAM file, called CRAM, which you can also create using samtools view.  However, we will not use that today.
+In this context, `samtools` view is the general command that allows the conversion of the SAM to BAM. There is another more compressed version of the SAM file, called CRAM, which you can also create using `samtools` view.  However, we will not use that today.
+
+**Note:** By using the `-t 4` parameter, we can take advantage of modern computers that allow multi-threading or parallelisation. This just means that the command can be broken up into 4 chunks and run in parallel, speeding up the process. Check you computers system settings, but you should be able to use at least 2 or 4 threads to run this alignment!
+
+To find out information on your resulting alignment you can `samtools`:
+
+```
+samtools stats SRR2003569_chI.bam
+```
+
+This is basically the same as another command `samtools flagstat`, but it gives additional information.
+
+### Questions
+
+1. How many reads aligned to our genome?
+
+2. How many reads aligned as a pair?
+
+3. What information does `samtools stats` provide that `samtools flagstat` does not?
+
+4. How many aligned as a "proper" pair? ..what the hell is a proper pair anyway??

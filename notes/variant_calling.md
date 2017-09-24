@@ -55,7 +55,7 @@ samtools faidx chrI.fa
 samtools index SRR2003569_chI.sorted.bam
 
 # Run freebayes to create VCF file
-freebayes -f chrI.fa --region I:1-1000000 SRR2003569_chI.sorted.bam > SRR2003569_chI_5Mb.sorted.bam.vcf
+freebayes -f chrI.fa --region I:1-1000000 SRR2003569_chI.sorted.bam > SRR2003569_chI_1Mb.sorted.vcf
 ```
 
 If you're interested in getting all variants from ChrI, run the command without the `--region I:1-5000000` parameter.
@@ -88,7 +88,8 @@ I       384     .       A       T       11.6927 .       AB=0.303371;ABP=62.7868;
 I       437     .       T       A       26.7335 .       AB=0.444444;ABP=3.25157;AC=1;AF=0.5;AN=2;AO=4;CIGAR=1X;DP=9;DPB=9;DPRA=0;EPP=5.18177;EPPR=13.8677;GTI=0;LEN=1;MEANALT=1;MQM=16.25;MQMR=11.4;NS=1;NUMALT=1;ODDS=6.15346;PAIRED=0.75;PAIREDR=0.4;PAO=0;PQA=0;PQR=0;PRO=0;QA=128;QR=161;RO=5;RPL=4;RPP=11.6962;RPPR=13.8677;RPR=0;RUN=1;SAF=3;SAP=5.18177;SAR=1;SRF=5;SRP=13.8677;SRR=0;TYPE=snp   GT:DP:AD:RO:QR:AO:QA:GL 0/1:9:5,4:5:161:4:128:-3.05744,0,-2.49224
 ```
 
-### Question
+
+### Questions
 
 1. How many variants were called in region ChrI:1-1Mb?
 
@@ -98,10 +99,80 @@ I       437     .       T       A       26.7335 .       AB=0.444444;ABP=3.25157;
 
 ## Filtering the VCF
 
+While we seem to have called a lot of variants on chrI, have a look at the sequence that the chromosome starts off with:
 
+```
+head chrI.fa
+```
+
+What can you say about the sequence?
+
+Just because a variant is called, does not mean that it is a true positive! Each variant called within the file holds a variant quality score (found in the *QUAL* field). [From the VCF format specifications](http://www.internationalgenome.org/wiki/Analysis/vcf4.0):
+
+```
+QUAL phred-scaled quality score for the assertion made in ALT. i.e. give -10log_10 prob(call in ALT is wrong). If ALT is ”.” (no variant) then this is -10log_10 p(variant), and if ALT is not ”.” this is -10log_10 p(no variant). High QUAL scores indicate high confidence calls. Although traditionally people use integer phred scores, this field is permitted to be a floating point to enable higher resolution for low confidence calls if desired. (Numeric)
+```
+
+
+
+So what to weed out the low confidence calls in our VCF file, we need to filter by QUAL, and this can be done using the `bcftools` program thats included within the `samtools` suite of tools. All these tools can run on gzip-compressed files which saves a lot of space on your computer.
+
+```
+gzip SRR2003569_chI_1Mb.sorted.bam.vcf
+```
+
+Ok lets filter by QUAL. We can do this with the `bcftools filter` or  `bcftools view` commands which allows you to run an expression filter. This means you can either exclude (`-e`) or include (`-i`) variants based on a certain criteria. In our case, lets exclude all variants that have a QUAL < 30.
+
+```
+bcftools filter -e 'QUAL < 30' SRR2003569_chI_1Mb.sorted.vcf.gz -Oz -o SRR2003569_chI_1Mb.sorted.q30.vcf.gz
+
+# You can pipe to grep and wc to remove the header
+#   and count your remaining variants after filtering too
+bcftools filter -e 'QUAL < 30' SRR2003569_chI_1Mb.sorted.vcf.gz | grep -v "^#" | wc -l
+```
+
+How many variants greater than QUAL 30 do you have? How about the number of heterozygous variants that have a QUAL>30?
+
+```
+bcftools filter -i 'QUAL>30 && GT="0/1"' SRR2003569_chI_1Mb.sorted.vcf.gz
+```
+
+The `bcftools view` commands gives a lot of additional filtering options.
+
+
+### Questions
+
+1. Use the `bcftools view` or `bcftools filter` command to count the number of:
+   a. SNPs
+   b. homozygous variants
+
+2. Depth is also a common filtering characteristic that many people use to remove low confidence variants. If you have low coverage of a variant, it lowers your ability to accurately call a heterozygotic site (especially if you are confident that you sequenced the sample the an adequate depth!). Find the number of SNPs that have a depth that is equal to or greater than 30 and a quality that is greater than 30.
 
 ## Genomic VCF
 
 While we can identify variants easily, what happens with the other regions? Do we know that there is no variants in regions that are not called? What happens if there is low genome sequence coverage in those regions? How can be be sure that we are not identifying variants in those regions?
 
-Using `freebayes` (and other haplotype/variant callers), we are able to create a
+Using `freebayes` (and other haplotype/variant callers), we are able to create a *genomic* VCF or GVCF, which includes coverage information of the uncalled regions.
+
+```
+freebayes -f chrI.fa --region I:1-1000000 SRR2003569_chI.sorted.bam --gvcf > SRR2003569_chI_1Mb.sorted.gvcf
+```
+
+Lets have a look at the GVCF file and see how it differs from VCF
+
+```
+#CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  unknown
+I       2       .       C       <*>     0       .       DP=0;END=358;MIN_DP=0   GQ:DP:MIN_DP:QR:QA      6842.23:0:0:7068:225.773
+I       359     .       A       T       1.53071e-06     .       AB=0.205128;ABP=32.4644;AC=1;AF=0.5;AN=2;AO=8;CIGAR=1X;DP=39;DPB=39;DPRA=0;EPP=20.3821;EPPR=17.1973;GTI=0;LEN=1;MEANALT=2;MQM=21.5;MQMR=10.0667;NS=1;NUMALT=1;ODDS=14.8585;PAIRED=0.25;PAIREDR=0.566667;PAO=0;PQA=0;PQR=0;PRO=0;QA=297;QR=1097;RO=30;RPL=0;RPP=20.3821;RPPR=68.1545;RPR=8;RUN=1;SAF=8;SAP=20.3821;SAR=0;SRF=22;SRP=17.1973;SRR=8;TYPE=snp       GT:DP:AD:RO:QR:AO:QA:GL 0/1:39:30,8:30:1097:8:297:-2.627,0,-15.4132
+I       360     .       A       <*>     0       .       DP=104;END=383;MIN_DP=39        GQ:DP:MIN_DP:QR:QA      83975.4:104:39:87242:3266.63
+I       384     .       A       T       11.6927 .       AB=0.303371;ABP=62.7868;AC=1;AF=0.5;AN=2;AO=54;CIGAR=1X;DP=178;DPB=178;DPRA=0;EPP=49.4959;EPPR=38.7602;GTI=0;LEN=1;MEANALT=2;MQM=21.2222;MQMR=10.4228;NS=1;NUMALT=1;ODDS=2.622;PAIRED=0.407407;PAIREDR=0.617886;PAO=0;PQA=0;PQR=0;PRO=0;QA=2002;QR=4545;RO=123;RPL=0;RPP=120.27;RPPR=261.486;RPR=54;RUN=1;SAF=44;SAP=49.4959;SAR=10;SRF=83;SRP=35.653;SRR=40;TYPE=snp   GT:DP:AD:RO:QR:AO:QA:GL 0/1:178:123,54:123:4545:54:2002:-38.3333,0,-56.9841
+I       385     .       G       <*>     0       .       DP=280;END=436;MIN_DP=81        GQ:DP:MIN_DP:QR:QA      521301:280:81:529404:8103.11
+```
+
+The first called line shows that between Position 2 till Position 358, there was no coverage (depth == 0). Therefore no variant could be called in that region. However two lines later we see that there is a region from between Position 360 till 383 which has extremely good coverage (depth of 104 with a minimum depth of 39), meaning that we can be sure that we only find the reference allele in that block.
+
+### Why are Genomic VCFs important?
+
+In large scale human genomics or whole genome sequencing used to diagnose a patient in the clinic, it is important that you are sure that you are not only identifying high-quality variants, but that you are not missing potentially pathogenic sequence variants in those regions that are difficult to sample. Its also important to note that the human reference genome is not exactly ethnically diverse (most of the genome is sequenced from European Individuals), meaning that one population's reference allele could easily be an alternate allele in another. GVCFs enable the user to derive the maximum amount of genomics information as possible from the variant caller.
+
+---

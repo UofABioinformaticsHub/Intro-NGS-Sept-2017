@@ -97,7 +97,7 @@ where *P* is the probability of calling the incorrect base.
 This is more easily seen in the following table:
 
 | PHRED Score | Probability of Incorrect Base Call | Accuracy of Base Call |
-| -----------:|:---------------------------------- |:----------------------|
+|:----------- |:---------------------------------- |:----------------------|
 | 0           | 1 in 1          | 0%          |
 | 10          | 1 in 10         | 90%         |
 | 20          | 1 in 100        | 99%         |
@@ -114,3 +114,5 @@ potential issues this would cause when searching within a fastq file?
 3.A common threshold for inclusion of a sequence is a Q score >20. Considering the
 millions of sequences obtained from a flowcell, do you think that NGS is likely to be
 highly accurate?
+
+[Home](../)

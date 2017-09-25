@@ -10,7 +10,7 @@ Copying and pasting the given code may be the easiest way to make sure everythin
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
 
-3. If you haven't installed the commands `sed` and `wget` in the `Bash` workshop last week, then install them now:
+- If you haven't installed the commands `sed` and `wget` in the `Bash` workshop last week, then install them now:
 
 ```
 brew install gnu-sed --default-names
@@ -18,18 +18,23 @@ brew install wget
 echo "export PATH=\${PATH}:/usr/local/Cellar/gnu-sed/4.4/bin:/usr/local/Cellar/wget/1.19.1_1/bin" >> ~/.bash_profile
 ```
 
-4. Install NGS tools: `fastqc`, `cutadapt`, `bwa`, `samtools`, `bcftools`, `freebayes`, `sabre`, `IGV`, `picard`
+- Install NGS tools: `fastqc`, `cutadapt`, `bwa`, `samtools`, `bcftools`, `freebayes`, `sabre`, `IGV`, `picard`
 
 ```
+brew update
+brew upgrade
+brew tap homebrew/science
 brew install fastqc
 brew install cutadapt
 brew install bwa
 brew install samtools
 brew install bcftools
 brew install freebayes
+brew install igv
+brew install picard-tools
 ```
 
-5. Install `sabre`
+- Install `sabre`
 
 ```
 brew install git
@@ -38,18 +43,6 @@ cd sabre
 make
 SABRE_HOME=`pwd`
 echo "export PATH=\${PATH}:${SABRE_HOME}" >> ~/.bash_profile
-```
-
-6. Download IGV
-
-```
-wget http://data.broadinstitute.org/igv/projects/downloads/2.4/IGV_2.4.0.app.zip
-```
-
-7. Download `picard`
-
-```
-wget https://github.com/broadinstitute/picard/releases/download/2.12.1/picard.jar
 ```
 
 After completing the above steps, close the terminal then open it again to start.

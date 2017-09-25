@@ -24,10 +24,18 @@ Additionally, the Illumina NextSeq machine's have a slighly different sequence s
 
 For more information on Illumina cluster density and other technical aspects of cycles and imaging, [read the following Illumina support material](https://support.illumina.com/content/dam/illumina-marketing/documents/products/other/miseq-overclustering-primer-770-2014-038.pdf).
 
-To demonstrate demultiplexing we will use the a sequencing run with two samples that have a 7bp barcode. Our barcode sequences should be "GCGTAGT" (for sample1) and "CCTCGTA" (for sample2). Lets first see what possible barcodes are available in the first 7bp of our dataset and see if it matches what we expect:
+To demonstrate demultiplexing we will use the a sequencing run with two samples that have a 7bp barcode. However, to do this we'll first need to download some example data that has barcodes attached to the start of the sequence:
 
 ```
-cd rawData/Multiplexed
+wget -c "https://universityofadelaide.box.com/shared/static/yjkh1o8ccdmp9g5myjsza6cqk48zenr7.gz" -O "multiplexed.tar.gz"
+```
+
+You should now have a raw sequence file called "Run1" with two pairs "Run1_R1.fastq.gz" and "Run1_R2.fastq.gz". Along with this is a text file with the barcode information.
+
+Our barcode sequences should be "GCGTAGT" (for bc1) and "CCTCGTA" (for bc2). Lets first see what possible barcodes are available in the first 7bp of our dataset and see if it matches what we expect:
+
+
+```
 zcat Run1_R1.fastq.gz | sed -n '2~4p' | cut -c 1-7 | sort | uniq -c | sort -nr | head -n10
 ```
 
@@ -45,10 +53,9 @@ The command above is quite long and contains multiple unix commands that are sep
 | `sort -nr` | sort the sequences and reverse the order |
 | `head -n10` | Print the top 10 |
 
-Our barcodes are actually in a file called barcodes
+Our real barcodes are actually in a file called barcodes_R1.txt. Unfortunately, sabre only runs with uncompressed data, so to run this program we'll need to ungzip our fastq files.
 
 ```
-cd rawData/Multiplexed/
 gunzip Run1_R1.fastq.gz
 gunzip Run1_R2.fastq.gz
 sabre pe -m 1 -f Run1_R1.fastq -r Run1_R2.fastq -b barcodes_R1.txt \

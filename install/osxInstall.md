@@ -46,3 +46,5 @@ echo "export PATH=\${PATH}:${SABRE_HOME}" >> ~/.bash_profile
 ```
 
 After completing the above steps, close the terminal then open it again to start.
+
+[Home](../)

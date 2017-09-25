@@ -28,4 +28,7 @@ Click OK if you receive a message about a security key.
 Once you've logged in you should see a desktop like the one below.
 To open the terminal, click the *terminal icon* at the bottom of the screen.
 
-![](images/VM_Desktop.png)
+![](../images/VM_Desktop.png)
+
+
+[Home](../)

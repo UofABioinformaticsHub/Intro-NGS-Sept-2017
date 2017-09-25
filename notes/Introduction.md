@@ -56,11 +56,8 @@ Many bioinformticians use these operating systems so the suite of tools is relat
 In order to correctly configure your computer for today's session, please follow the links below.
 
 - [Mac/OSX](../install/osxInstall)
-- [Ubuntu]
+- [Windows](../install/windowsInstall)
+- [Ubuntu](..install/ubuntuInstall)
 
-For those running Windows, we could probably perform about half of today's session on your computer.
-However, as many tools rely on the fundamental architecture of OSX & Linux systems, not all tools are available.
-The best solution for today's session is to use a VM which we have configured for you.
-Setup instructions for these VMs are given on the following page.
 
 [Home](../)

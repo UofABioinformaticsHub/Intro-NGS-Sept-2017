@@ -27,7 +27,12 @@ For more information on Illumina cluster density and other technical aspects of 
 To demonstrate demultiplexing we will use the a sequencing run with two samples that have a 7bp barcode. However, to do this we'll first need to download some example data that has barcodes attached to the start of the sequence:
 
 ```
+cd ~
 wget -c "https://universityofadelaide.box.com/shared/static/yjkh1o8ccdmp9g5myjsza6cqk48zenr7.gz" -O "multiplexed.tar.gz"
+tar xzvf multiplexed.tar.gz
+mkdir -p multiplexed/rawData/fastq
+mv *fastq.gz multiplexed/rawData/fastq
+cd multiplexed/rawData/fastq
 ```
 
 You should now have a raw sequence file called "Run1" with two pairs "Run1_R1.fastq.gz" and "Run1_R2.fastq.gz". Along with this is a text file with the barcode information.

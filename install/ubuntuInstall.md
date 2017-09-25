@@ -8,11 +8,20 @@ Copying and pasting the given code may be the easiest way to make sure everythin
 ```
 sudo apt-get update
 sudo apt-get install cmake
-sudo apt-get install fastqc
 sudo apt-get install bwa
 sudo apt-get install samtools
 sudo apt-get install igv
 sudo apt-get install picard-tools
+```
+
+- To install `FastQC`
+
+```
+cd /opt
+sudo wget https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.5.zip
+sudo unzip fastqc_v0.11.5.zip
+echo 'export PATH="/opt/FastQC:$PATH"' >> ~/.bashrc
+source ~/.bashrc
 ```
 
 - To install `bamtools` we need to clone the software using `git`, then use `cmake` & `make`.

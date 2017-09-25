@@ -59,5 +59,20 @@ In order to correctly configure your computer for today's session, please follow
 - [Windows](../install/windowsInstall)
 - [Ubuntu](../install/ubuntuInstall)
 
+## Data For Today's Workshop
+
+For those using a VM, the data will already be on your machines.
+The rest of us will need to download then extract the data.
+For convenience we recommend placing this in a directory called `~/WGS/rawData/fastq`
+
+```
+cd
+mkdir -p WGS/rawData/fastq
+wget -c "https://universityofadelaide.box.com/shared/static/cc0sgo2kya68zs2qu6r4ql2o38kits76.gz" -O "Intro-NGS-Sept-2017-files.tar.gz"
+tar -xzvf Intro-NGS-Sept-2017-files.tar.gz
+mv *.fastq.gz WGS/rawData/fastq/
+mv chrI.fa WGS
+```
+
 
 [Home](../)

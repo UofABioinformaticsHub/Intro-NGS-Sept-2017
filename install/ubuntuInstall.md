@@ -19,14 +19,16 @@ sudo apt-get install picard-tools
 (The following can be copied and pasted as a single command.)
 
 ```
-cd ~/Downloads
-git clone https://github.com/pezmaster31/bamtools
+cd /opt
+sudo git clone https://github.com/pezmaster31/bamtools
 cd bamtools
-mkdir build
+sudo mkdir build
 cd build
-cmake ..
-make
+sudo cmake ..
+sudo make
 sudo make install
+echo 'export PATH="/opt/bamtools/lib:$PATH"' >> ~/.bashrc
+source ~/.bashrc
 ```
 
 - To install `bcftools` we also need to clone two git repos before the install.
@@ -40,6 +42,17 @@ make
 sudo make install
 ```
 
+- Next we'll need to install `freebayes` which we'll use later for variant calling
+
+```
+cd /opt
+sudo git clone --recursive git://github.com/ekg/freebayes.git
+cd freebayes
+sudo make
+echo 'export PATH="/opt/freebayes/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+```
+
 - We'll also use `sabre` for demultiplexing
 
 ```
@@ -51,17 +64,10 @@ echo 'export PATH="/opt/sabre:$PATH"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-- Next we'll need to install `freebayes` which we'll use later for variant calling
-
-```
-git clone --recursive git://github.com/ekg/freebayes.git
-cd freebayes
-make
-```
-
 Finally, to install cutadapt, we need to use the `pip` installer instead of `apt-get`
 
 ```
+cd
 sudo apt-get install python-pip python-dev build-essential
 sudo pip install --upgrade pip
 sudo pip install --upgrade virtualenv

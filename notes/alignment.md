@@ -65,7 +65,7 @@ You should be able to open a few of the files with the ”less” command, howev
 Because we only have a small subset of the actual sequencing run, we should be able to run this alignment in a reasonable period of time
 
 ```
-cd ~/WGS/rawData/fastq
+cd ~/WGS/trimmedData/fastq
 bwa mem -t 4 Celegans_chrI SRR2003569_sub_1.fastq.gz SRR2003569_sub_2.fastq.gz | samtools view -bhS -F4 -> SRR2003569_chI.bam
 ```
 

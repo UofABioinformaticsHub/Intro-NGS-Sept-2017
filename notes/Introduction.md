@@ -57,7 +57,7 @@ In order to correctly configure your computer for today's session, please follow
 
 - [Mac/OSX](../install/osxInstall)
 - [Windows](../install/windowsInstall)
-- [Ubuntu](..install/ubuntuInstall)
+- [Ubuntu](../install/ubuntuInstall)
 
 
 [Home](../)

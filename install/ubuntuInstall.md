@@ -3,7 +3,7 @@
 To set up your own computer for today's session, follow these instructions.
 Copying and pasting the given code may be the easiest way to make sure everything works.
 
-1. Open a Terminal and enter these lines one at a time. Enter `y` where required.
+- Open a Terminal and enter these lines one at a time. Enter `y` where required.
 
 ```
 sudo apt-get update
@@ -15,7 +15,7 @@ sudo apt-get install igv
 sudo apt-get install picard-tools
 ```
 
-- To install `bamtools` we need to clone the software `git`, then use `cmake` & `make`.
+- To install `bamtools` we need to clone the software using `git`, then use `cmake` & `make`.
 (The following can be copied and pasted as a single command.)
 
 ```

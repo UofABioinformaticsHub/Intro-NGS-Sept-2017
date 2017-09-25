@@ -1,7 +1,7 @@
 
 # Variant Calling
 
-While sequence alignment is potentially the most important aspect of most NGS pipelines, in whole genome sequencing (WGS) experiments, such as the *C. elegans* data that we currently have, it is crucial to not only identify where reads have mapped, but regions in which they differ. These regions are called "sequence variants". Sequence variants can come in many types, with the three major forms that can be identified in NGS are:
+While sequence alignment is potentially the most important aspect of most NGS pipelines, in whole genome sequencing (WGS) experiments, such as the *C. elegans* data that we currently have, it is crucial to not only identify where reads have mapped, but regions in which they differ. These regions are called "sequence variants", and can take many forms. Three major types of sequence variation that occur in NGS data include:
 
 1. Single Nucleotide Polymorphisms or Variants (SNPs/SNVs): single-base pair changes. e.g. A->G
 2. Insertion-Deletions (InDels): An insertion or deletion of a region of genomic DNA. e.g. AATA->A
@@ -21,7 +21,7 @@ This helps the variant caller to run the calling algorithm efficiently and preve
 
 ---
 **Note: Additional Filtering**
-Ideally, before we start calling variants, the is a level of duplicate filtering that needs to be carried out to ensure accuracy of variant calling and allele frequencies. The definition of read duplicates can differ depending on which program you use, but usually it means 'a read in an alignment that has exactly the same start and end position'. The `samtools` documentation states "if multiple read pairs have identical external coordinates, only retain the pair with highest mapping quality". Which this seems fine for a simple sequencing experiment, this method has drawbacks for large sequencing projects that may use multiple libraries etc. A more robust duplicate removal program such as [MarkDuplicates from Picard Tools](http://broadinstitute.github.io/picard/) is commonly used. Below is an example of what you usually need to run to filter duplicates
+Ideally, before we start calling variants, there is a level of duplicate filtering that needs to be carried out to ensure accuracy of variant calling and allele frequencies. The definition of read duplicates can differ depending on which program you use, but usually it means 'a read in an alignment that has exactly the same start and end position'. The `samtools` documentation states "if multiple read pairs have identical external coordinates, only retain the pair with highest mapping quality". While this seems fine for a simple sequencing experiment, this method has drawbacks for large sequencing projects that may use multiple libraries etc. A more robust duplicate removal program such as [MarkDuplicates from Picard Tools](http://broadinstitute.github.io/picard/) is commonly used. Below is an example of what you usually need to run to filter duplicates
 
 ```
 # Remove duplicates the samtools way
@@ -62,7 +62,7 @@ If you're interested in getting all variants from ChrI, run the command without 
 
 ## Interpreting VCF
 
-Ok lets have a look at our VCF file. The first part of the file is called the header and it contains all information about the reference sequence, the command that was run, and an explanation of every bit of information thats contained within the *FORMAT* and *INFO* fields of each called variant. These lines are denoted by two hash symbols at the beginning of the line ("\#\#"). The last line before the start of the variant calls is different to most of the header, as it has one \# and contains the column names for the rest of the file. Because we did not specify a name for this sample, the genotype field (the last field of the column line) says "unknown".
+Ok, lets have a look at our VCF file. The first part of the file is called the header and it contains all information about the reference sequence, the command that was run, and an explanation of every bit of information that's contained within the *FORMAT* and *INFO* fields of each called variant. These lines are denoted by two hash symbols at the beginning of the line ("\#\#"). The last line before the start of the variant calls is different to most of the header, as it has one \# and contains the column names for the rest of the file. Because we did not specify a name for this sample, the genotype field (the last field of the column line) says "unknown".
 
 ```
 ##fileformat=VCFv4.2
@@ -115,7 +115,7 @@ QUAL phred-scaled quality score for the assertion made in ALT. i.e. give -10log_
 
 
 
-So what to weed out the low confidence calls in our VCF file, we need to filter by QUAL, and this can be done using the `bcftools` program thats included within the `samtools` suite of tools. All these tools can run on gzip-compressed files which saves a lot of space on your computer.
+To weed out the low confidence calls in our VCF file we need to filter by QUAL. This can be done using the `bcftools` program that's included within the `samtools` suite of tools. All these tools can run on gzip-compressed files which saves a lot of space on your computer.
 
 ```
 gzip SRR2003569_chI_1Mb.sorted.bam.vcf
@@ -150,7 +150,7 @@ The `bcftools view` commands gives a lot of additional filtering options.
 
 ## Genomic VCF
 
-While we can identify variants easily, what happens with the other regions? Do we know that there is no variants in regions that are not called? What happens if there is low genome sequence coverage in those regions? How can be be sure that we are not identifying variants in those regions?
+While we can identify variants easily, what happens with the other regions? Do we know that there is no variants in regions that are not called? What happens if there is low genome sequence coverage in those regions? How can we be sure that we are not identifying variants in those regions?
 
 Using `freebayes` (and other haplotype/variant callers), we are able to create a *genomic* VCF or GVCF, which includes coverage information of the uncalled regions.
 

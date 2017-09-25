@@ -1,3 +1,5 @@
+* TOC
+{:toc}
 
 # Trimming and quality filtering of NGS data
 
@@ -43,8 +45,6 @@ The command above is quite long and contains multiple unix commands that are sep
 | `sort -nr` | sort the sequences and reverse the order |
 | `head -n10` | Print the top 10 |
 
-
-\begin{steps}
 Our barcodes are actually in a file called barcodes
 
 ```
@@ -68,31 +68,45 @@ In previous workshops we would run multiple steps to remove both low-quality rea
 The tool we'll use today is `cutadapt` \& it's one of the few bioinformatics tools to have a helpful webpage, [so head to the site](http://cutadapt.readthedocs.org/).
 
 
-## Paired-end Data
+Now we can trim the raw data using the Illumina Nextera paired-end adapters obtained from [this website](https://support.illumina.com/bulletins/2016/12/what-sequences-do-i-use-for-adapter-trimming.html)
+These are commonly used in Illumina projects.
 
-In the above process, we removed the adapters from each file separately. What did the setting `-m 20` specify?
-
-Could this cause any problems for paired-end reads, where each fastq file must contain exactly matching reads?
-
-The more recent versions of `cutadapt` allow for trimming sets of paired reads.
-[Check the website for the correct code](http://cutadapt.readthedocs.org/en/stable/guide.html#trimming-paired-end-reads).
-
-Now we can trim the data our demultiplexed data using the Illumina Nextera paired-end adapters. This are commonly used in Illumina projects. The index in the 3' adapter of the first read, which is used to demultiplex on the sequencing machine, we need block the sequence otherwise it can cause problems in the adapter matching. To do this, we use a sequence of "N" nucleotides.
+Before we perform adapter trimming, look at the following code.
 
 ```
-cd rawData/Multiplexed
-mkdir -p rawData/Multiplexed/trimmedData
-cutadapt -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCACNNNNNNATCTCGTATGCCGTCTTCTGCTTG \
-    -A AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATT \
-    -o rawData/Multiplexed/trimmedData/Sample1_r1_trim1.fastq \
-    -p rawData/Multiplexed/trimmedData/Sample1_r2_trim2.fastq \
-    Sample1_r1.fastq Sample1_r2.fastq
+cd ~/WGS
+mkdir -p trimmedData/fastq
+cutadapt -m 35 -q 20 -a CTGTCTCTTATACACATCT -A CTGTCTCTTATACACATCT \
+    -o trimmedData/fastq/SRR2003569_sub_1.fastq.gz -p trimmedData/fastq/SRR2003569_sub_2.fastq.gz \
+    rawData/fastq/SRR2003569_sub_1.fastq.gz rawData/fastq/SRR2003569_sub_2.fastq.gz > cutadapt.log
 ```
 
-Now lets do this with Sample2.
+#### Question
+{:.no_toc}
+*1. What did the settings* `-m 35` *and* `q 20` *do in the above?*
 
-When running the adapter trimming we needed to add blocking "N" nucleotides to the adapter sequence. Why do we do this?
+The `cutadapt` tool produces a large amount of information about the trimming process
+In the above we wrote this output to a log file using the `>` symbol to redirect `stdout` to a file.
+Let's have a look in the file to check the output.
 
-How many final adapter trimmed reads were found in Sample1 and Sample2?
+```
+less cutadapt.log
+```
 
-The cutadapt program produces a large amount of information about the trimming process, especially regarding the sequence length distribution of the output reads. To the nearest 10bp (i.e. 10-20 or 110-120), what would be the modal peak of each Sample (the 10bp containing the most number of sequences)?
+As these were a good initial sample, it's not surprising that we didn't lose many sequences.
+Notice that many reads were trimmed, but were still long enough and high enough quality to be retained.
+
+The relatively even spread of A/C/G/T bases after the adapters also indicates that we've not missed anything.
+Sometimes, if we've missed a base in the adapter you'll see a strong bias in the first base after adapter removal.
+
+### FastQC
+
+Before moving on, we need to check the quality of the trimmed sequences, so let's run `fastqc` on these files to check them out.
+
+```
+mkdir -p trimmedData/FastQC
+fastqc -o trimmedData/FastQC -t 2 trimmedData/fastq/*gz
+```
+#### Question
+{:.no_toc}
+*Was there much of an improvement in the trimmed data?*

@@ -21,7 +21,8 @@ To align any reads, we first need to download the appropriate (i.e.  latest) gen
 
 **Note**: If you want the full genome sequence you can use the command-line program `wget` to download the *C. elegans* genome sequence. If `wget` doesnt work for you, you can always you can always redownload the genome (like you can do with all model genomes) by opening Firefox & head to [ftp://ftp.ensembl.org/pub/release-90/fasta/caenorhabditis_elegans/](ftp://ftp.ensembl.org/pub/release-90/fasta/caenorhabditis_elegans/).  
 
-For todays tutorial, we've given you just the sequence of chrI:
+For todays tutorial, we've given you just the sequence of chrI.
+It may have been accidentally saved as the file `WGS` so if you have a file called `WGS` and can't see this file call an instructor over.
 
 ```
 # Have a look at the first few lines

@@ -15,6 +15,7 @@ University of Adelaide
 - [3 Quality Control](notes/qc)
 - [4 Trimming And Filtering Data](notes/filtering_sequence)
 - [5 Aligning Data](notes/alignment)
+- [5a Working with Alignments](notes/working_with_alignments)
 - [6 Identifying Variants](notes/variant_calling)
 
 

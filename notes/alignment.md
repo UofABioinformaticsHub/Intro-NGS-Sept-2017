@@ -107,7 +107,14 @@ This is basically the same as another command `samtools flagstat`, but it gives 
 # Viewing the alignments
 
 A common tool used for viewing alignments is IGV browser.
-We can open this just by entering `igv` in the terminal.
+Before we can view the alignments we need to sort and index the alignments.
+
+```
+samtools sort SRR2003569_chI.bam > SRR2003569_chI.sorted.bam
+samtools index SRR2003569_chI.sorted.bam
+```
+
+Now we can oepn IGV by entering `igv` in the terminal.
 
 ```
 igv

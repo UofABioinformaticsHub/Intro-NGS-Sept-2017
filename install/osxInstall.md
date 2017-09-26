@@ -30,7 +30,6 @@ brew install bwa
 brew install samtools
 brew install bcftools
 brew install freebayes
-brew install igv
 brew install picard-tools
 ```
 
@@ -43,6 +42,12 @@ cd sabre
 make
 SABRE_HOME=`pwd`
 echo "export PATH=\${PATH}:${SABRE_HOME}" >> ~/.bash_profile
+```
+
+- Download `IGV`
+
+```
+wget http://data.broadinstitute.org/igv/projects/downloads/2.4/IGV_2.4.0.app.zip
 ```
 
 After completing the above steps, close the terminal then open it again to start.

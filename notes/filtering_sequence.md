@@ -13,7 +13,7 @@ Using today’s datasets, we will take one sequencing through demultiplexing and
 
 ![Illumina Workflow](../images/workflow.png)
 
-\section{Demultiplexing}
+## Demultiplexing
 
 In the previous section "Understanding NGS Data \& FASTQ Format" we discussed the difference between an *index* and a *barcode*. If you use an indexed adapter to distinguish samples on an Illumina sequencing run, the demultiplexing is *usually* done on the sequencing machine. However, sometimes it makes sense to use a barcode (or sometimes called "inline barcode"), to further multiplex samples onto one sequencing run.
 
@@ -27,7 +27,12 @@ For more information on Illumina cluster density and other technical aspects of 
 To demonstrate demultiplexing we will use the a sequencing run with two samples that have a 7bp barcode. However, to do this we'll first need to download some example data that has barcodes attached to the start of the sequence:
 
 ```
+cd ~
 wget -c "https://universityofadelaide.box.com/shared/static/yjkh1o8ccdmp9g5myjsza6cqk48zenr7.gz" -O "multiplexed.tar.gz"
+tar xzvf multiplexed.tar.gz
+mkdir -p multiplexed/rawData/fastq
+mv *fastq.gz multiplexed/rawData/fastq
+cd multiplexed/rawData/fastq
 ```
 
 You should now have a raw sequence file called "Run1" with two pairs "Run1_R1.fastq.gz" and "Run1_R2.fastq.gz". Along with this is a text file with the barcode information.

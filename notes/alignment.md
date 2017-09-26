@@ -21,7 +21,8 @@ To align any reads, we first need to download the appropriate (i.e.  latest) gen
 
 **Note**: If you want the full genome sequence you can use the command-line program `wget` to download the *C. elegans* genome sequence. If `wget` doesnt work for you, you can always you can always redownload the genome (like you can do with all model genomes) by opening Firefox & head to [ftp://ftp.ensembl.org/pub/release-90/fasta/caenorhabditis_elegans/](ftp://ftp.ensembl.org/pub/release-90/fasta/caenorhabditis_elegans/).  
 
-For todays tutorial, we've given you just the sequence of chrI:
+For todays tutorial, we've given you just the sequence of chrI.
+It may have been accidentally saved as the file `WGS` so if you have a file called `WGS` and can't see this file call an instructor over.
 
 ```
 # Have a look at the first few lines
@@ -102,3 +103,25 @@ This is basically the same as another command `samtools flagstat`, but it gives 
 3. What information does `samtools stats` provide that `samtools flagstat` does not?
 
 4. How many aligned as a "proper" pair? ..what the hell is a proper pair anyway??
+
+# Viewing the alignments
+
+A common tool used for viewing alignments is IGV browser.
+We can open this just by entering `igv` in the terminal.
+
+```
+igv
+```
+
+Once you've open IGV, go to the `Genomes` menu & select `Load genome from file`.
+Navigate to where you have `chrI.fa` and load this file.
+Although this isn't the full genome, it will have everything we've aligned.
+
+Now go to the `File` menu and select `Load from File` and navigate to your alignments.
+Unfortunately you won't see anything until you zoom in.
+This is so IGV doesn't hold the entire set of alignments in memory which would slow your computer to a stand-still.
+Keep zooming in until some alignments appear then have a look around.
+
+*What does all of the information mean when you hover over an alignment?*
+
+We'll come back and have a look again after we've finished calling variants.

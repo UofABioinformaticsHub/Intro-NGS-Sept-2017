@@ -81,7 +81,7 @@ wget -c "https://universityofadelaide.box.com/shared/static/cc0sgo2kya68zs2qu6r4
 ```
 tar -xzvf Intro-NGS-Sept-2017-files.tar.gz
 mv *.fastq.gz WGS/rawData/fastq/
-mv chrI.fa WGS
+mv chrI.fa WGS/
 ```
 
 

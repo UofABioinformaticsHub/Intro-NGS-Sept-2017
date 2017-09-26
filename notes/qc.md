@@ -33,7 +33,7 @@ This can be much quicker when dealing with large experiments.
 ```
 cd ~/WGS/rawData/
 mkdir FastQC
-cd fastqc
+cd fastq
 fastqc -o ../FastQC -t 2 *gz
 ```
 
@@ -155,7 +155,7 @@ We could write a script to extract this information if we had the time.
 However, the Bioinformatics Hub has been writing an `R` package to help with this, which is available from https://github.com/UofABioinformaticsHub/ngsReports.
 
 We're hoping to publish this soon and using the package is beyond the scope of today.
-However, we've included a [sample report](data/ngsReports_Fastqc) of a dataset summarised using heatmaps.
+However, we've included a [sample report](../data/ngsReports_Fastqc) of a dataset summarised using heatmaps.
 This is simply the default report produced and the package is capable of exploring large datasets relatively easily.
-Have a look at [this report](data/ngsReports_Fastqc) and see if you can understand any of the plots.
+Have a look at [this report](../data/ngsReports_Fastqc) and see if you can understand any of the plots.
 Call an instructor over if you have any questions.

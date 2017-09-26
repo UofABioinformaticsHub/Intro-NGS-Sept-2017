@@ -50,7 +50,7 @@ bwa index
 Using this particular process you can usually just run the command on the fasta file and the index will be called by the same filename.  However in this case, we will name the index "Celegans_chrI" by using the `-p` flag/parameter Now that we’ve had a look, type to following command which will take a few minutes to run.
 
 ```
-bwa index chrI.fa -p Celegans_chrI
+bwa index ~/WGS/chrI.fa -p Celegans_chrI
 ```
 
 Let’s look at what files have been created.
@@ -67,13 +67,13 @@ Because we only have a small subset of the actual sequencing run, we should be a
 
 ```
 cd ~/WGS/trimmedData/fastq
-bwa mem -t 4 Celegans_chrI SRR2003569_sub_1.fastq.gz SRR2003569_sub_2.fastq.gz | samtools view -bhS -F4 -> SRR2003569_chI.bam
+bwa mem -t 4 ~/WGS/Celegans_chrI SRR2003569_sub_1.fastq.gz SRR2003569_sub_2.fastq.gz | samtools view -bhS -F4 -> SRR2003569_chI.bam
 ```
 
 Let’s break down this command a little.  The first part of the command:
 
 ```
-bwa mem -t 4 Celegans_chrI SRR2003569_sub_1.fastq.gz SRR2003569_sub_2.fastq.gz
+bwa mem -t 4 ~/WGS/Celegans_chrI SRR2003569_sub_1.fastq.gz SRR2003569_sub_2.fastq.gz
 ```
 
 will align our compressed sequenced reads to the Celegans_chrI `bwa` index that we made. Usually you can create a SAM file (see next section) to store all the alignment data.  SAM files however are text files which can take up a significant amount of disk space, so its much more efficient to pipe it to the `samtools` command and create a compressed binary SAM file (called BAM). To do this, we run the program `samtools`:

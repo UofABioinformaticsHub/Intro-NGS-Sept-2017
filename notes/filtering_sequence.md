@@ -13,7 +13,7 @@ Using today’s datasets, we will take one sequencing through demultiplexing and
 
 ![Illumina Workflow](../images/workflow.png)
 
-\section{Demultiplexing}
+## Demultiplexing
 
 In the previous section "Understanding NGS Data \& FASTQ Format" we discussed the difference between an *index* and a *barcode*. If you use an indexed adapter to distinguish samples on an Illumina sequencing run, the demultiplexing is *usually* done on the sequencing machine. However, sometimes it makes sense to use a barcode (or sometimes called "inline barcode"), to further multiplex samples onto one sequencing run.
 

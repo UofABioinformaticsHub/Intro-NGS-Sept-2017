@@ -82,5 +82,11 @@ mv *.fastq.gz WGS/rawData/fastq/
 mv chrI.fa WGS/
 ```
 
+# FileZilla
+
+If working on a remote VM, you may also like to install FileZilla on your local machine, to enable easy file transfer between local and remote machines.
+This is available from https://filezilla-project.org/.
+You can ue this to login to the remote machine and transfer files between the two.
+The user:password on the remote machine will be the same as your usual login.
 
 [Home](../)

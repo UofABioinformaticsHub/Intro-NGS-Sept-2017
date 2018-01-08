@@ -22,6 +22,7 @@ sudo apt-get install bwa
 sudo apt-get install samtools
 sudo apt-get install igv
 sudo apt-get install picard-tools
+sudo apt-get install python-pip python-dev build-essential
 ```
 
 - To install `FastQC`, we'll place this in the folder `/opt`, which is a common location for *optional* software.
@@ -89,7 +90,6 @@ Finally, to install cutadapt, we need to use the `pip` installer instead of `apt
 
 ```
 cd
-sudo apt-get install python-pip python-dev build-essential
 sudo pip install --upgrade pip
 sudo pip install --upgrade virtualenv
 sudo pip install --upgrade cutadapt

@@ -114,13 +114,14 @@ samtools sort SRR2003569_chI.bam > SRR2003569_chI.sorted.bam
 samtools index SRR2003569_chI.sorted.bam
 ```
 
-Now we can oepn IGV by entering `igv` in the terminal.
+Now we can open IGV by entering `igv` in the terminal.
+If you have logged into a VM using `ssh -X`, this will open on your local machine in a new window which may take a moment or two.
 
 ```
 igv
 ```
 
-Once you've open IGV, go to the `Genomes` menu & select `Load genome from file`.
+Once you've opened IGV, go to the `Genomes` menu & select `Load genome from file`.
 Navigate to where you have `chrI.fa` and load this file.
 Although this isn't the full genome, it will have everything we've aligned.
 

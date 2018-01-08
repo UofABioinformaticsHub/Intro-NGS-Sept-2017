@@ -1,12 +1,22 @@
 # Ubuntu installation
 
 To set up your own computer for today's session, follow these instructions.
+This is a good example of how software installation is often performed on an ubuntu system.
 Copying and pasting the given code may be the easiest way to make sure everything works.
 
 - Open a Terminal and enter these lines one at a time. Enter `y` where required.
+- The prefix `sudo` means *super user do* and gives the system authorisation to install software. You'll need to enter your password the first time, but this will only be required once, or until the session times out.
+
+- This first line just updates the locations for all of the software repositories
 
 ```
 sudo apt-get update
+```
+
+- Now we'll use the command `install` from the `apt-get` set of tools to perform installation fromthe default set of software repositories.
+This is similar to `brew install` which may be familiar to OSX users.
+
+```
 sudo apt-get install cmake
 sudo apt-get install bwa
 sudo apt-get install samtools
@@ -14,7 +24,8 @@ sudo apt-get install igv
 sudo apt-get install picard-tools
 ```
 
-- To install `FastQC`
+- To install `FastQC`, we'll place this in the folder `/opt`, which is a common location for *optional* software.
+Installing things here can be helpful as you won't accidentally overwrite any important system tools.
 
 ```
 cd /opt
@@ -43,6 +54,7 @@ source ~/.bashrc
 - To install `bcftools` we also need to clone two git repos before the install.
 
 ```
+mkdir ~/Downloads
 cd ~/Downloads
 git clone git://github.com/samtools/htslib.git
 git clone git://github.com/samtools/bcftools.git
@@ -73,7 +85,7 @@ echo 'export PATH="/opt/sabre:$PATH"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-Finally, to install cutadapt, we need to use the `pip` installer instead of `apt-get`
+Finally, to install cutadapt, we need to use the `pip` installer instead of `apt-get` which is based on python
 
 ```
 cd

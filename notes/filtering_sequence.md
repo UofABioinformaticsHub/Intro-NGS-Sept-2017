@@ -28,7 +28,7 @@ To demonstrate demultiplexing we will use the a sequencing run with two samples 
 
 ```
 cd ~
-wget -c "https://universityofadelaide.box.com/shared/static/yjkh1o8ccdmp9g5myjsza6cqk48zenr7.gz" -O "multiplexed.tar.gz"
+wget -c "https://universityofadelaide.box.com/shared/static/gje9uq74b8kies32to699jyjbs5l81jb.gz" -O "multiplexed.tar.gz"
 tar xzvf multiplexed.tar.gz
 mkdir -p multiplexed/rawData/fastq
 mv *fastq.gz multiplexed/rawData/fastq

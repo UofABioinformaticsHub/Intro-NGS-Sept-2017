@@ -23,6 +23,7 @@ sudo apt-get install samtools
 sudo apt-get install igv
 sudo apt-get install picard-tools
 sudo apt-get install python-pip python-dev build-essential
+sudo apt-get install xauth
 ```
 
 - To install `FastQC`, we'll place this in the folder `/opt`, which is a common location for *optional* software.

@@ -52,7 +52,13 @@ ls -lh
 
 The reports are in `html` files, which may be in the `FastQC` directory, or may be in the directories for the individual files, (depending on your version of FastQC).
 Find the `html` files and open using your favourite browser.
+If you have FileZilla installed, you can download these to your local machine and open them from there.
+Otherwise open them in Ubuntu using the following command.
 (The best browser for those on the VMs is firefox).
+
+```
+firefox *html
+```
 
 The left hand menu contains a series of click-able links to navigate through the report, with a quick guideline about each section given as a tick, cross of exclamation mark.
 Two hints which may make your inspection of these files easier are:

@@ -32,6 +32,7 @@ Installing things here can be helpful as you won't accidentally overwrite any im
 cd /opt
 sudo wget https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.5.zip
 sudo unzip fastqc_v0.11.5.zip
+sudo chmod +x /opt/FastQC/fastqc
 echo 'export PATH="/opt/FastQC:$PATH"' >> ~/.bashrc
 source ~/.bashrc
 ```

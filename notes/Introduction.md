@@ -70,13 +70,11 @@ cd
 mkdir -p WGS/rawData/fastq
 ```
 
-**VM users will not need to execute the following command.**
-All others will need to perform this todownload today's data.
-```
-wget -c "https://universityofadelaide.box.com/shared/static/cc0sgo2kya68zs2qu6r4ql2o38kits76.gz" -O "Intro-NGS-Sept-2017-files.tar.gz"
-```
+Now execute the following command to download today's data.
 
-**All users will need to execute the following**.
+```
+wget -c "https://universityofadelaide.box.com/shared/static/6t5tv1hxbu4s24jffjatqx9us3owajbt.gz" -O "Intro-NGS-Sept-2017-files.tar.gz"
+```
 
 ```
 tar -xzvf Intro-NGS-Sept-2017-files.tar.gz

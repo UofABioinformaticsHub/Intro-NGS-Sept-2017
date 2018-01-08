@@ -5,7 +5,7 @@ This is a good example of how software installation is often performed on an ubu
 Copying and pasting the given code may be the easiest way to make sure everything works.
 
 - Open a Terminal and enter these lines one at a time. Enter `y` where required.
-- The prefix `sudo` means *super user do* and gives the system authorisation to install software. You'll need to enter your password the first time, but this will only be required once, or until the session times out.
+- The prefix `sudo` means *super user do* and gives the system authorisation to install software. You'll need to enter your password the first time, but this will only be required once, or until the session times out. If you see a message saying `sudo: unable to resolve host...` just ignore it. (No-one knows why all the VMs do this.)
 
 - This first line just updates the locations for all of the software repositories
 
